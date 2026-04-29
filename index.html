@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Client Dashboard</title>
+  
+  <!-- This pulls in our styling and icons without needing to install anything! -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-100 via-slate-50 to-slate-200 flex flex-col items-center py-8 px-4 font-sans sm:py-12">
+  
+  <!-- Mobile-sized container -->
+  <div class="w-full max-w-md bg-white/80 backdrop-blur-xl rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.08)] p-6 sm:p-8 space-y-8 border border-white">
+
+    <!-- Header section -->
+    <div class="text-center space-y-3 mt-4">
+      <!-- Logo Container -->
+      <div class="w-20 h-20 mx-auto flex items-center justify-center mb-2 bg-white rounded-full shadow-sm border border-slate-100 ring-4 ring-white/50 overflow-hidden">
+        <img 
+          src="https://firebasestorage.googleapis.com/v0/b/accountability-566c2.firebasestorage.app/o/088529ce-52f4-4ef7-a65f-0923d5901386.png?alt=media" 
+          alt="Brand Logo" 
+          class="w-full h-full object-contain p-2"
+        />
+      </div>
+      <h1 id="client-name-display" class="text-3xl font-extrabold text-slate-800 tracking-tight">
+        Welcome, Client!
+      </h1>
+      <p class="text-slate-500 text-base leading-relaxed px-4 font-medium">
+        Your personal coaching dashboard. Choose a tool below to get started.
+      </p>
+    </div>
+
+    <!-- Big Buttons section -->
+    <div class="flex flex-col space-y-4 pt-2">
+      
+      <!-- Button 1 -->
+      <a href="https://accountability-livid.vercel.app" target="_blank" rel="noopener noreferrer" class="flex items-center p-5 rounded-2xl text-white text-lg font-semibold shadow-lg shadow-blue-500/30 bg-gradient-to-br from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 border border-blue-400/50 transition-all duration-300 transform active:scale-95 hover:-translate-y-1">
+        <i data-lucide="activity" class="w-6 h-6 mr-3 opacity-90"></i>
+        <span class="tracking-wide">Accountability Tracker</span>
+      </a>
+
+      <!-- Button 2 -->
+      <a href="https://zatrainingnutrition.vercel.app" target="_blank" rel="noopener noreferrer" class="flex items-center p-5 rounded-2xl text-white text-lg font-semibold shadow-lg shadow-emerald-500/30 bg-gradient-to-br from-emerald-400 to-emerald-600 hover:from-emerald-500 hover:to-emerald-700 border border-emerald-400/50 transition-all duration-300 transform active:scale-95 hover:-translate-y-1">
+        <i data-lucide="dumbbell" class="w-6 h-6 mr-3 opacity-90"></i>
+        <span class="tracking-wide">My Personalised Meal Planner</span>
+      </a>
+
+      <!-- Button 3 -->
+      <a href="https://calcalc.lovable.app/" target="_blank" rel="noopener noreferrer" class="flex items-center p-5 rounded-2xl text-white text-lg font-semibold shadow-lg shadow-indigo-500/30 bg-gradient-to-br from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 border border-indigo-400/50 transition-all duration-300 transform active:scale-95 hover:-translate-y-1">
+        <i data-lucide="calculator" class="w-6 h-6 mr-3 opacity-90"></i>
+        <span class="tracking-wide">Desi Calculator</span>
+      </a>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="text-center pt-6 pb-2 text-sm text-slate-400 font-semibold px-4">
+       If you need any help with the above, just message your coach on WhatsApp.
+    </div>
+
+  </div>
+
+  <script>
+    // 1. Draw the icons
+    lucide.createIcons();
+
+    // 2. Read the client's name from the URL (?client=Name)
+    const params = new URLSearchParams(window.location.search);
+    const nameParam = params.get('client');
+    
+    if (nameParam) {
+      // Capitalize the first letter
+      const formattedName = nameParam.charAt(0).toUpperCase() + nameParam.slice(1);
+      // Update the screen
+      document.getElementById('client-name-display').textContent = `Welcome, ${formattedName}!`;
+    }
+  </script>
+</body>
+</html>
