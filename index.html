@@ -36,28 +36,49 @@
     <div class="flex flex-col space-y-4 pt-2">
       
       <!-- Button 1 -->
-      <a href="https://accountability-livid.vercel.app" target="_blank" rel="noopener noreferrer" class="flex items-center p-5 rounded-2xl text-white text-lg font-semibold shadow-lg shadow-blue-500/30 bg-gradient-to-br from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 border border-blue-400/50 transition-all duration-300 transform active:scale-95 hover:-translate-y-1">
-        <i data-lucide="activity" class="w-6 h-6 mr-3 opacity-90"></i>
-        <span class="tracking-wide">Accountability Tracker</span>
+      <a href="https://accountability-livid.vercel.app" target="_blank" rel="noopener noreferrer" class="flex items-center p-5 rounded-2xl text-white shadow-lg shadow-blue-500/30 bg-gradient-to-br from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 border border-blue-400/50 transition-all duration-300 transform active:scale-95 hover:-translate-y-1">
+        <i data-lucide="activity" class="w-8 h-8 mr-4 opacity-90 shrink-0"></i>
+        <div class="flex flex-col text-left">
+          <span class="font-bold text-lg tracking-wide">Accountability Tracker</span>
+          <span class="text-sm font-medium text-blue-100 mt-0.5 leading-snug">Log your daily habits, weight, and progress.</span>
+        </div>
       </a>
 
       <!-- Button 2 -->
-      <a href="https://zatrainingnutrition.vercel.app" target="_blank" rel="noopener noreferrer" class="flex items-center p-5 rounded-2xl text-white text-lg font-semibold shadow-lg shadow-emerald-500/30 bg-gradient-to-br from-emerald-400 to-emerald-600 hover:from-emerald-500 hover:to-emerald-700 border border-emerald-400/50 transition-all duration-300 transform active:scale-95 hover:-translate-y-1">
-        <i data-lucide="dumbbell" class="w-6 h-6 mr-3 opacity-90"></i>
-        <span class="tracking-wide">My Personalised Meal Planner</span>
+      <a href="https://zatrainingnutrition.vercel.app" target="_blank" rel="noopener noreferrer" class="flex items-center p-5 rounded-2xl text-white shadow-lg shadow-emerald-500/30 bg-gradient-to-br from-emerald-400 to-emerald-600 hover:from-emerald-500 hover:to-emerald-700 border border-emerald-400/50 transition-all duration-300 transform active:scale-95 hover:-translate-y-1">
+        <i data-lucide="dumbbell" class="w-8 h-8 mr-4 opacity-90 shrink-0"></i>
+        <div class="flex flex-col text-left">
+          <span class="font-bold text-lg tracking-wide">My Personalised Meal Planner</span>
+          <span class="text-sm font-medium text-emerald-100 mt-0.5 leading-snug">Get ideas personalised to you with the exact foods you have at home.</span>
+        </div>
       </a>
 
       <!-- Button 3 -->
-      <a href="https://calcalc.lovable.app/" target="_blank" rel="noopener noreferrer" class="flex items-center p-5 rounded-2xl text-white text-lg font-semibold shadow-lg shadow-indigo-500/30 bg-gradient-to-br from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 border border-indigo-400/50 transition-all duration-300 transform active:scale-95 hover:-translate-y-1">
-        <i data-lucide="calculator" class="w-6 h-6 mr-3 opacity-90"></i>
-        <span class="tracking-wide">Desi Calculator</span>
+      <a href="https://calcalc.lovable.app/" target="_blank" rel="noopener noreferrer" class="flex items-center p-5 rounded-2xl text-white shadow-lg shadow-indigo-500/30 bg-gradient-to-br from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 border border-indigo-400/50 transition-all duration-300 transform active:scale-95 hover:-translate-y-1">
+        <i data-lucide="calculator" class="w-8 h-8 mr-4 opacity-90 shrink-0"></i>
+        <div class="flex flex-col text-left">
+          <span class="font-bold text-lg tracking-wide">Desi Calculator</span>
+          <span class="text-sm font-medium text-indigo-100 mt-0.5 leading-snug">Calculate calories for traditional home-cooked meals.</span>
+        </div>
+      </a>
+
+      <!-- Button 4 -->
+      <a href="https://drive.google.com/drive/folders/17Dbc2xhv4e5nPGPqO1xofC2tpxG-HuAw?usp=drive_link" target="_blank" rel="noopener noreferrer" class="flex items-center p-5 rounded-2xl text-white shadow-lg shadow-orange-500/30 bg-gradient-to-br from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 border border-amber-400/50 transition-all duration-300 transform active:scale-95 hover:-translate-y-1">
+        <i data-lucide="folder-open" class="w-8 h-8 mr-4 opacity-90 shrink-0"></i>
+        <div class="flex flex-col text-left">
+          <span class="font-bold text-lg tracking-wide">Coaching Resources</span>
+          <span class="text-sm font-medium text-orange-100 mt-0.5 leading-snug">Snack guides, cooking guides, shopping guides, money-saving tips, and more.</span>
+        </div>
       </a>
 
     </div>
 
-    <!-- Footer -->
-    <div class="text-center pt-6 pb-2 text-sm text-slate-400 font-semibold px-4">
-       If you need any help with the above, just message your coach on WhatsApp.
+    <!-- Login Help Box -->
+    <div class="mt-6 bg-blue-50 border border-blue-200 rounded-xl p-4 flex items-start space-x-3 shadow-sm">
+      <i data-lucide="info" class="w-6 h-6 text-blue-500 shrink-0"></i>
+      <p class="text-sm text-blue-800 font-medium leading-relaxed text-left">
+        If you're unsure what your login details are for the apps, please message Zayb on WhatsApp and he'll send them over to you.
+      </p>
     </div>
 
   </div>
@@ -67,6 +88,7 @@
     lucide.createIcons();
 
     // 2. Read the client's name from the URL (?client=Name)
+    // Note: In this preview window, there is no URL link to read, so it will stay as "Welcome, Client!"
     const params = new URLSearchParams(window.location.search);
     const nameParam = params.get('client');
     
