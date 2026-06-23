@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resource Library</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-100 via-slate-50 to-slate-200 flex flex-col items-center py-8 px-4 font-sans sm:py-12">
+
+  <div class="w-full max-w-md bg-white/80 backdrop-blur-xl rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.08)] p-6 sm:p-8 space-y-6 border border-white">
+
+    <div class="flex items-center justify-between">
+      <a href="index.html" class="flex items-center text-slate-500 text-sm font-semibold hover:text-slate-700">
+        <i data-lucide="arrow-left" class="w-4 h-4 mr-1"></i>
+        Dashboard
+      </a>
+    </div>
+
+    <div class="text-center space-y-2">
+      <div class="w-16 h-16 mx-auto flex items-center justify-center mb-1 bg-white rounded-full shadow-sm border border-slate-100 ring-4 ring-white/50 overflow-hidden">
+        <i data-lucide="book-open" class="w-7 h-7 text-amber-500"></i>
+      </div>
+      <h1 class="text-2xl font-extrabold text-slate-800 tracking-tight">Resource Library</h1>
+      <p class="text-slate-500 text-sm leading-relaxed px-2 font-medium">Tap a category, then tap any guide to open it.</p>
+    </div>
+
+    <div id="cats" class="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1"></div>
+
+    <div id="grid" class="flex flex-col gap-3"></div>
+
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    const CATEGORIES = [
+      { key: 'meal-ideas', label: 'Meal Ideas', icon: 'utensils' },
+      { key: 'meal-prep-calorie-plans', label: 'Meal Prep & Calories', icon: 'calendar-check' },
+      { key: 'snacks-eating-out', label: 'Snacks & Eating Out', icon: 'coffee' },
+      { key: 'shopping-guides', label: 'Shopping Guides', icon: 'shopping-cart' },
+      { key: 'nutrition-hacks-science', label: 'Nutrition Hacks', icon: 'lightbulb' },
+      { key: 'travel-guides', label: 'Travel Guides', icon: 'plane' }
+    ];
+
+    const MANIFEST = {
+  "meal-prep-calorie-plans": [
+    {
+      "title": "Week 1",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fmeal-prep-calorie-plans%2FWeek%201.pdf?alt=media&token=d7e5051f-d4ae-4ca5-811b-1701cc1cb27b",
+      "sizeBytes": 3623016
+    },
+    {
+      "title": "Meal Prep 101",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fmeal-prep-calorie-plans%2FMeal%20Prep%20101.pdf?alt=media&token=21862fb2-1bec-45cd-90e8-c6ba2653d4da",
+      "sizeBytes": 2485764
+    },
+    {
+      "title": "1100-1200",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fmeal-prep-calorie-plans%2F1100-1200.pdf?alt=media&token=a38f30a2-35e4-447e-8c2f-ec62611e0b2f",
+      "sizeBytes": 1880676
+    },
+    {
+      "title": "1300-1400",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fmeal-prep-calorie-plans%2F1300-1400.pdf?alt=media&token=182b398a-a211-4014-9949-42378c772557",
+      "sizeBytes": 1805716
+    },
+    {
+      "title": "1500-1600",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fmeal-prep-calorie-plans%2F1500-1600.pdf?alt=media&token=376e549f-a5aa-42b6-9da5-749444f7c49e",
+      "sizeBytes": 1857132
+    },
+    {
+      "title": "1600-1700",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fmeal-prep-calorie-plans%2F1600-1700.pdf?alt=media&token=6da4ca31-ceac-4919-90e8-06e092a59310",
+      "sizeBytes": 2058544
+    },
+    {
+      "title": "1700-1800",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fmeal-prep-calorie-plans%2F1700-1800.pdf?alt=media&token=fdc429c3-b8ae-4e79-94e6-2ec488bbd25c",
+      "sizeBytes": 1676759
+    },
+    {
+      "title": "1800-1900",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fmeal-prep-calorie-plans%2F1800-1900.pdf?alt=media&token=85355a6a-75e8-4975-9dbd-d2dbabb75312",
+      "sizeBytes": 1623374
+    },
+    {
+      "title": "1900-2000",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fmeal-prep-calorie-plans%2F1900-2000.pdf?alt=media&token=54048665-a14f-4cb4-abb9-aa0abaa9e9ea",
+      "sizeBytes": 1704071
+    }
+  ],
+  "meal-ideas": [
+    {
+      "title": "South Asian Cooking",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fmeal-ideas%2FSouth%20Asian%20Cooking.pdf?alt=media&token=4fc062ac-c3a6-4671-beae-970db817e4e4",
+      "sizeBytes": 4461619
+    },
+    {
+      "title": "desi dinners",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fmeal-ideas%2Fdesi%20dinners.pdf?alt=media&token=1b7fe6c6-2df6-4b65-842c-9fe522cd1594",
+      "sizeBytes": 4130545
+    },
+    {
+      "title": "desi-food-Calories",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fmeal-ideas%2Fdesi-food-Calories.pdf?alt=media&token=2b331c2f-e810-406d-9c91-0ae8844dabfc",
+      "sizeBytes": 2198852
+    },
+    {
+      "title": "Low-Kcal Snack Guide",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fmeal-ideas%2FLow-Kcal%20Snack%20Guide.pdf?alt=media&token=f7fc1f6f-7ca8-4b77-9d9d-293671c44744",
+      "sizeBytes": 7107796
+    },
+    {
+      "title": "The No-Meat Cook Book",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fmeal-ideas%2FThe%20No-Meat%20Cook%20Book.pdf?alt=media&token=c218a971-2c2f-41f3-b8f9-1394990cb586",
+      "sizeBytes": 5781499
+    },
+    {
+      "title": "The Z.A Cook Book",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fmeal-ideas%2FThe%20Z.A%20Cook%20Book.pdf?alt=media&token=c6a36673-17e9-4ee3-b2f5-2c1e071251ff",
+      "sizeBytes": 5729826
+    },
+    {
+      "title": "Easy Breakfasts",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fmeal-ideas%2FEasy%20Breakfasts.pdf?alt=media&token=dffe9e10-37c4-4bd3-b61a-e279f146e5b3",
+      "sizeBytes": 5348843
+    },
+    {
+      "title": "Nutrition for very busy people",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fmeal-ideas%2FNutrition%20for%20very%20busy%20people.pdf?alt=media&token=a28f614b-2af9-45a1-83a6-a8b5720e2bfc",
+      "sizeBytes": 3409266
+    },
+    {
+      "title": "Simple Lunches",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fmeal-ideas%2FSimple%20Lunches.pdf?alt=media&token=368c7272-ef49-49ff-8a31-1a7102a3ccdf",
+      "sizeBytes": 6381667
+    },
+    {
+      "title": "Breakfast Ideas W_Dairy. pdf",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fmeal-ideas%2FBreakfast%20Ideas%20W_Dairy.%20pdf.pdf?alt=media&token=8924e0de-6049-4d90-a039-782ddc0a6db1",
+      "sizeBytes": 3083451
+    },
+    {
+      "title": "Breakfast Ideas W_Eggs",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fmeal-ideas%2FBreakfast%20Ideas%20W_Eggs.pdf?alt=media&token=983b97c6-765a-4196-ac85-7d8cc321b793",
+      "sizeBytes": 3391256
+    },
+    {
+      "title": "Dinner Ideas W_Chicken",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fmeal-ideas%2FDinner%20Ideas%20W_Chicken.pdf?alt=media&token=07ae0330-8415-41d9-a659-c9b684ffbf35",
+      "sizeBytes": 2369898
+    },
+    {
+      "title": "Lunch Ideas W_ Fish ",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fmeal-ideas%2FLunch%20Ideas%20W_%20Fish%20.pdf?alt=media&token=0ba0e55f-d479-4672-b7ab-df5bf63e9ba0",
+      "sizeBytes": 2945469
+    },
+    {
+      "title": "Lunch Ideas W_Meat",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fmeal-ideas%2FLunch%20Ideas%20W_Meat.pdf?alt=media&token=e7d577d0-e0c7-46b6-b41a-427ed7cd3511",
+      "sizeBytes": 3891665
+    },
+    {
+      "title": "Lunch Ideas W_No Meat",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fmeal-ideas%2FLunch%20Ideas%20W_No%20Meat.pdf?alt=media&token=1f62e6e1-3c95-4348-bf5b-30899e2376ee",
+      "sizeBytes": 3492331
+    }
+  ],
+  "nutrition-hacks-science": [
+    {
+      "title": "Carb-Cycle",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fnutrition-hacks-science%2FCarb-Cycle.pdf?alt=media&token=ee9c1f7b-b7a1-4c0d-91c2-b975db3fd756",
+      "sizeBytes": 3338971
+    },
+    {
+      "title": "Easy Food Swaps",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fnutrition-hacks-science%2FEasy%20Food%20Swaps.pdf?alt=media&token=37c02593-290e-41d2-9c81-8f4280834206",
+      "sizeBytes": 10443446
+    },
+    {
+      "title": "Fibre & Nutrients ",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fnutrition-hacks-science%2FFibre%20%26%20Nutrients%20.pdf?alt=media&token=9f7f5532-f8db-4bf2-86d9-a1f7504a04a1",
+      "sizeBytes": 1213503
+    },
+    {
+      "title": "Food Labels",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fnutrition-hacks-science%2FFood%20Labels.pdf?alt=media&token=ebd893c9-197d-45e6-af8d-add4f80b1c21",
+      "sizeBytes": 1767887
+    },
+    {
+      "title": "Intermittent Fasting Hacks",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fnutrition-hacks-science%2FIntermittent%20Fasting%20Hacks.pdf?alt=media&token=7f44ab17-ada9-480d-8c49-6af51c7ba09f",
+      "sizeBytes": 983885
+    },
+    {
+      "title": "Kitchen Hacks",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fnutrition-hacks-science%2FKitchen%20Hacks.pdf?alt=media&token=8ebf1b3c-fc3e-49ee-a3b0-be27bd8bc6c9",
+      "sizeBytes": 2262653
+    },
+    {
+      "title": "Low-Carb Tips",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fnutrition-hacks-science%2FLow-Carb%20Tips.pdf?alt=media&token=628fb977-cf3b-4346-9add-ac7f5a11fa2d",
+      "sizeBytes": 13841663
+    },
+    {
+      "title": "Protein Powder",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fnutrition-hacks-science%2FProtein%20Powder.pdf?alt=media&token=a7a132f2-157b-407f-b38e-197e517d7369",
+      "sizeBytes": 694862
+    },
+    {
+      "title": "Volume Eating",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fnutrition-hacks-science%2FVolume%20Eating.pdf?alt=media&token=e5f999e9-1f07-4b25-b8c1-7126c9408577",
+      "sizeBytes": 708203
+    },
+    {
+      "title": "Workout Nutrition",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fnutrition-hacks-science%2FWorkout%20Nutrition.pdf?alt=media&token=24da1584-24a3-4d9b-be1a-618590bb4038",
+      "sizeBytes": 730365
+    },
+    {
+      "title": "Protein Cheat Sheet",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fnutrition-hacks-science%2FProtein%20Cheat%20Sheet.pdf?alt=media&token=23176c2f-54d8-4153-8470-8e0d21551989",
+      "sizeBytes": 3078704
+    },
+    {
+      "title": "IF 1200-1300",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fnutrition-hacks-science%2FIF%201200-1300.pdf?alt=media&token=9d006b93-5a79-4237-8923-c599babe0a0d",
+      "sizeBytes": 1480752
+    },
+    {
+      "title": "IF 1300-1400",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fnutrition-hacks-science%2FIF%201300-1400.pdf?alt=media&token=b436860f-a2e7-4847-8dc2-bb39f691de6e",
+      "sizeBytes": 1520940
+    },
+    {
+      "title": "IF 1400-1500",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fnutrition-hacks-science%2FIF%201400-1500.pdf?alt=media&token=212da894-821d-4108-8ea8-927cef5ff1e7",
+      "sizeBytes": 1535041
+    },
+    {
+      "title": "IF 1500-1600",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fnutrition-hacks-science%2FIF%201500-1600.pdf?alt=media&token=24eb7e22-1b53-4d8f-b0d3-2b9ff06711e6",
+      "sizeBytes": 1480462
+    },
+    {
+      "title": "IF 1600-1700",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fnutrition-hacks-science%2FIF%201600-1700.pdf?alt=media&token=7280d41b-bf77-494b-8a77-3a8e91f5d435",
+      "sizeBytes": 1468157
+    },
+    {
+      "title": "The Monthly Flow",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fnutrition-hacks-science%2FThe%20Monthly%20Flow.pdf?alt=media&token=bf9e3f66-c77d-4dfb-ba5c-27381acd8bb0",
+      "sizeBytes": 2311670
+    },
+    {
+      "title": "Fats",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fnutrition-hacks-science%2FFats.pdf?alt=media&token=b9e5849c-80ac-4dce-9180-91099cf65f80",
+      "sizeBytes": 1154839
+    },
+    {
+      "title": "Fibre",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fnutrition-hacks-science%2FFibre.pdf?alt=media&token=31e2fd01-041d-40b3-b8b9-aa1a1b223831",
+      "sizeBytes": 1422967
+    },
+    {
+      "title": "Fruit",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fnutrition-hacks-science%2FFruit.pdf?alt=media&token=4e8ee62d-330f-4937-be48-d22a7ac4285c",
+      "sizeBytes": 1022377
+    },
+    {
+      "title": "Good Carbs",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fnutrition-hacks-science%2FGood%20Carbs.pdf?alt=media&token=0e113931-b1b9-49dd-8e46-8233977f7401",
+      "sizeBytes": 3643005
+    },
+    {
+      "title": "Veggies",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fnutrition-hacks-science%2FVeggies.pdf?alt=media&token=1de2f677-4143-4e95-b1ef-a69c8521b4b7",
+      "sizeBytes": 1497583
+    },
+    {
+      "title": "READ ME FIRST",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fnutrition-hacks-science%2FREAD%20ME%20FIRST.pdf?alt=media&token=fb4b222d-4783-4c5b-8b96-a2ae24c256b9",
+      "sizeBytes": 6255252
+    },
+    {
+      "title": "Supplements",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fnutrition-hacks-science%2FSupplements.pdf?alt=media&token=8469a7c3-43fc-4c01-90dc-be373648ea3e",
+      "sizeBytes": 782450
+    }
+  ],
+  "snacks-eating-out": [
+    {
+      "title": "Cafe Nero",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fsnacks-eating-out%2FCafe%20Nero.pdf?alt=media&token=d3f12170-6867-47eb-aa65-2f78981473f4",
+      "sizeBytes": 320503
+    },
+    {
+      "title": "Costa",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fsnacks-eating-out%2FCosta.pdf?alt=media&token=7cb70659-32bc-4bbf-a755-880c8306379c",
+      "sizeBytes": 699294
+    },
+    {
+      "title": "Dominos",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fsnacks-eating-out%2FDominos.pdf?alt=media&token=88e62961-4a8c-4dc5-9650-ee00a33a47e5",
+      "sizeBytes": 990551
+    },
+    {
+      "title": "Greggs",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fsnacks-eating-out%2FGreggs.pdf?alt=media&token=909b2990-1eb3-4a30-89e0-25620de39dbc",
+      "sizeBytes": 347845
+    },
+    {
+      "title": "KFC",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fsnacks-eating-out%2FKFC.pdf?alt=media&token=0c749022-50e1-4db8-b036-946353c522f0",
+      "sizeBytes": 614717
+    },
+    {
+      "title": "Krispy Kreme",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fsnacks-eating-out%2FKrispy%20Kreme.pdf?alt=media&token=25f18568-7d92-4ed2-81cc-b860c1da89a3",
+      "sizeBytes": 594264
+    },
+    {
+      "title": "McDonalds",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fsnacks-eating-out%2FMcDonalds.pdf?alt=media&token=62c9a695-29e7-49c7-9b95-6abd5bb335e6",
+      "sizeBytes": 3397716
+    },
+    {
+      "title": "Nandos",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fsnacks-eating-out%2FNandos.pdf?alt=media&token=d9170e9e-fa44-4854-8cae-2ef8de73824f",
+      "sizeBytes": 546719
+    },
+    {
+      "title": "Pret",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fsnacks-eating-out%2FPret.pdf?alt=media&token=a7ac77d1-a285-488e-b725-aaedf0dcf5ad",
+      "sizeBytes": 434557
+    },
+    {
+      "title": "Subway",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fsnacks-eating-out%2FSubway.pdf?alt=media&token=21c12379-650a-4023-9ba0-b10f645b4eed",
+      "sizeBytes": 388285
+    },
+    {
+      "title": "Takeaway Guide",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fsnacks-eating-out%2FTakeaway%20Guide.pdf?alt=media&token=fd8166ab-264d-46ac-ba11-267df399746b",
+      "sizeBytes": 998572
+    },
+    {
+      "title": "Protein Snacks",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fsnacks-eating-out%2FProtein%20Snacks.pdf?alt=media&token=2aac9538-74ad-444f-b050-53b6feec6956",
+      "sizeBytes": 1874712
+    },
+    {
+      "title": "Snack Guide 1 ",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fsnacks-eating-out%2FSnack%20Guide%201%20.pdf?alt=media&token=c10b318b-e180-4386-93b5-d26c90366c8f",
+      "sizeBytes": 637021
+    },
+    {
+      "title": "Snack Guide 2 ",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fsnacks-eating-out%2FSnack%20Guide%202%20.pdf?alt=media&token=00ee437b-260a-4995-aa69-7eda7a372daa",
+      "sizeBytes": 1065878
+    }
+  ],
+  "shopping-guides": [
+    {
+      "title": "ALDI ",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fshopping-guides%2FALDI%20.pdf?alt=media&token=d33cbf95-2d3e-424b-bc1d-7d98139a8134",
+      "sizeBytes": 1604804
+    },
+    {
+      "title": "Asda",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fshopping-guides%2FAsda.pdf?alt=media&token=ebc0278c-137b-470f-8bcb-c0d53be6ab34",
+      "sizeBytes": 2727993
+    },
+    {
+      "title": "CO-OP",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fshopping-guides%2FCO-OP.pdf?alt=media&token=d79da706-311f-4348-9b5a-f8332a575dd9",
+      "sizeBytes": 3371153
+    },
+    {
+      "title": "Fitness Equipment",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fshopping-guides%2FFitness%20Equipment.pdf?alt=media&token=421362ab-a1f3-4773-8084-ab14b256b1cc",
+      "sizeBytes": 1550923
+    },
+    {
+      "title": "Iceland",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fshopping-guides%2FIceland.pdf?alt=media&token=6a4f88c5-4bd2-48c2-8ec5-80f9b834c11c",
+      "sizeBytes": 1379907
+    },
+    {
+      "title": "MORRISONS",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fshopping-guides%2FMORRISONS.pdf?alt=media&token=47b44493-ee24-4f2d-8f0d-cbdb5cd7e429",
+      "sizeBytes": 1948395
+    },
+    {
+      "title": "Ocado",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fshopping-guides%2FOcado.pdf?alt=media&token=3b7c369a-bb4e-4649-a3b4-1e7405e6fa95",
+      "sizeBytes": 2137401
+    },
+    {
+      "title": "Sainsburys",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fshopping-guides%2FSainsburys.pdf?alt=media&token=690db606-c224-4f63-87bc-fe9aa8ef4d4d",
+      "sizeBytes": 3004628
+    },
+    {
+      "title": "Students",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fshopping-guides%2FStudents.pdf?alt=media&token=001bd1c3-ca21-4b8e-a2e8-0440277c53b5",
+      "sizeBytes": 4294544
+    },
+    {
+      "title": "TESCO ",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fshopping-guides%2FTESCO%20.pdf?alt=media&token=6304d19a-5bb6-4512-8c1a-0a669923b71f",
+      "sizeBytes": 968839
+    },
+    {
+      "title": "WAITROSE",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Fshopping-guides%2FWAITROSE.pdf?alt=media&token=ea34f237-af87-4aa9-bb87-61eb37ef470b",
+      "sizeBytes": 3756790
+    }
+  ],
+  "travel-guides": [
+    {
+      "title": "Eating.png",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Ftravel-guides%2FEating.png?alt=media&token=52549220-89fc-4cfb-bd4e-368d5da06133",
+      "sizeBytes": 2281618
+    },
+    {
+      "title": "Grazing (WARNING).png",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Ftravel-guides%2FGrazing%20(WARNING).png?alt=media&token=8f0ebb7e-85fe-4d77-b87c-3fb664305c6b",
+      "sizeBytes": 3011659
+    },
+    {
+      "title": "Steps on Holiday.png",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Ftravel-guides%2FSteps%20on%20Holiday.png?alt=media&token=e7c44ab8-c6ad-4377-acda-0b25d77b4dbe",
+      "sizeBytes": 2991383
+    },
+    {
+      "title": "Travelling",
+      "url": "https://firebasestorage.googleapis.com/v0/b/accountability-app-68ab7.firebasestorage.app/o/resources%2Ftravel-guides%2FTravelling.pdf?alt=media&token=ec396d8c-d4a2-4887-89a1-6486f7d9b0ce",
+      "sizeBytes": 2316746
+    }
+  ]
+};
+
+    function cleanTitle(t) {
+      return t
+        .replace(/\.(pdf|png|jpg|jpeg)$/i, '')
+        .replace(/\s*pdf$/i, '')
+        .replace(/W_\s*/g, 'With ')
+        .replace(/_/g, ' ')
+        .replace(/\s+/g, ' ')
+        .replace(/\.$/, '')
+        .trim();
+    }
+
+    function formatSize(bytes) {
+      return (bytes / 1e6).toFixed(1) + ' MB';
+    }
+
+    let active = CATEGORIES[0].key;
+    const catsEl = document.getElementById('cats');
+    const gridEl = document.getElementById('grid');
+
+    function renderCats() {
+      catsEl.innerHTML = '';
+      CATEGORIES.forEach(c => {
+        const isActive = c.key === active;
+        const btn = document.createElement('button');
+        btn.className = `flex items-center gap-1.5 flex-shrink-0 text-xs font-bold px-3 py-2 rounded-full whitespace-nowrap transition-colors ${
+          isActive ? 'bg-amber-500 text-white shadow-sm' : 'bg-slate-100 text-slate-600'
+        }`;
+        btn.innerHTML = `<i data-lucide="${c.icon}" class="w-3.5 h-3.5"></i><span>${c.label}</span>`;
+        btn.onclick = () => { active = c.key; renderCats(); renderGrid(); };
+        catsEl.appendChild(btn);
+      });
+      lucide.createIcons();
+    }
+
+    function renderGrid() {
+      gridEl.innerHTML = '';
+      const items = MANIFEST[active] || [];
+      items.forEach(item => {
+        const a = document.createElement('a');
+        a.href = item.url;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        a.className = 'flex items-center p-4 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200';
+        a.innerHTML = `
+          <div class="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center mr-3 flex-shrink-0">
+            <i data-lucide="file-text" class="w-5 h-5 text-amber-500"></i>
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="font-bold text-sm text-slate-800 truncate">${cleanTitle(item.title)}</div>
+            <div class="text-xs text-slate-400 mt-0.5">${formatSize(item.sizeBytes)}</div>
+          </div>
+          <i data-lucide="download" class="w-4 h-4 text-slate-400 flex-shrink-0 ml-2"></i>
+        `;
+        gridEl.appendChild(a);
+      });
+      lucide.createIcons();
+    }
+
+    renderCats();
+    renderGrid();
+  </script>
+</body>
+</html>
