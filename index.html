@@ -4,28 +4,43 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Client Dashboard</title>
-  
+
   <!-- This pulls in our styling and icons without needing to install anything! -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body class="min-h-screen bg-gradient-to-br from-slate-100 via-slate-50 to-slate-200 flex flex-col items-center py-8 px-4 font-sans sm:py-12">
-  
+
+  <!-- Checking access -->
+  <div id="loading-screen" class="w-full max-w-md bg-white/80 backdrop-blur-xl rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.08)] p-10 text-center border border-white">
+    <i data-lucide="loader-circle" class="w-8 h-8 mx-auto text-slate-400 animate-spin"></i>
+    <p class="text-slate-500 text-sm font-medium mt-3">Checking your access...</p>
+  </div>
+
+  <!-- Blocked screen -->
+  <div id="blocked-screen" class="w-full max-w-md bg-white/80 backdrop-blur-xl rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.08)] p-8 text-center border border-white hidden">
+    <div class="w-16 h-16 mx-auto flex items-center justify-center mb-4 bg-red-50 rounded-full">
+      <i data-lucide="lock" class="w-7 h-7 text-red-500"></i>
+    </div>
+    <h1 class="text-xl font-extrabold text-slate-800">This link is no longer active</h1>
+    <p class="text-slate-500 text-sm leading-relaxed mt-2">Please message Zayb on WhatsApp if you think this is a mistake.</p>
+  </div>
+
   <!-- Mobile-sized container -->
-  <div class="w-full max-w-md bg-white/80 backdrop-blur-xl rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.08)] p-6 sm:p-8 space-y-8 border border-white">
+  <div id="main-content" class="w-full max-w-md bg-white/80 backdrop-blur-xl rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.08)] p-6 sm:p-8 space-y-8 border border-white hidden">
 
     <!-- Header section -->
     <div class="text-center space-y-3 mt-4">
       <!-- Logo Container -->
       <div class="w-20 h-20 mx-auto flex items-center justify-center mb-2 bg-white rounded-full shadow-sm border border-slate-100 ring-4 ring-white/50 overflow-hidden">
-        <img 
-          src="https://firebasestorage.googleapis.com/v0/b/accountability-566c2.firebasestorage.app/o/088529ce-52f4-4ef7-a65f-0923d5901386.png?alt=media" 
-          alt="Brand Logo" 
+        <img
+          src="https://firebasestorage.googleapis.com/v0/b/accountability-566c2.firebasestorage.app/o/088529ce-52f4-4ef7-a65f-0923d5901386.png?alt=media"
+          alt="Brand Logo"
           class="w-full h-full object-contain p-2"
         />
       </div>
       <h1 id="client-name-display" class="text-3xl font-extrabold text-slate-800 tracking-tight">
-        Welcome, Client!
+        Welcome!
       </h1>
       <p class="text-slate-500 text-base leading-relaxed px-4 font-medium">
         Your personal coaching dashboard. Choose a tool below to get started.
@@ -34,9 +49,9 @@
 
     <!-- Big Buttons section -->
     <div class="flex flex-col space-y-4 pt-2">
-      
+
       <!-- Button 1 -->
-      <a href="https://accountability-livid.vercel.app" target="_blank" rel="noopener noreferrer" class="flex items-center p-5 rounded-2xl text-white shadow-lg shadow-blue-500/30 bg-gradient-to-br from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 border border-blue-400/50 transition-all duration-300 transform active:scale-95 hover:-translate-y-1">
+      <a id="btn-accountability" href="https://accountability-livid.vercel.app" target="_blank" rel="noopener noreferrer" class="flex items-center p-5 rounded-2xl text-white shadow-lg shadow-blue-500/30 bg-gradient-to-br from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 border border-blue-400/50 transition-all duration-300 transform active:scale-95 hover:-translate-y-1">
         <i data-lucide="activity" class="w-8 h-8 mr-4 opacity-90 shrink-0"></i>
         <div class="flex flex-col text-left">
           <span class="font-bold text-lg tracking-wide">Accountability Tracker</span>
@@ -93,20 +108,47 @@
   </div>
 
   <script>
-    // 1. Draw the icons
     lucide.createIcons();
 
-    // 2. Read the client's name from the URL (?client=Name)
-    // Note: In this preview window, there is no URL link to read, so it will stay as "Welcome, Client!"
-    const params = new URLSearchParams(window.location.search);
-    const nameParam = params.get('client');
-    
-    if (nameParam) {
-      // Capitalize the first letter
-      const formattedName = nameParam.charAt(0).toUpperCase() + nameParam.slice(1);
-      // Update the screen
-      document.getElementById('client-name-display').textContent = `Welcome, ${formattedName}!`;
+    const FIRESTORE_PROJECT = 'accountability-app-68ab7';
+
+    function show(id) {
+      ['loading-screen', 'blocked-screen', 'main-content'].forEach(el => {
+        document.getElementById(el).classList.toggle('hidden', el !== id);
+      });
+      lucide.createIcons();
     }
+
+    async function checkAccess() {
+      const params = new URLSearchParams(window.location.search);
+      const code = params.get('client');
+
+      if (!code) { show('blocked-screen'); return; }
+
+      try {
+        const res = await fetch(`https://firestore.googleapis.com/v1/projects/${FIRESTORE_PROJECT}/databases/(default)/documents/dashboardAccess/${encodeURIComponent(code)}`);
+        if (!res.ok) { show('blocked-screen'); return; }
+
+        const doc = await res.json();
+        const fields = doc.fields || {};
+        const isActive = fields.active && fields.active.booleanValue === true;
+        if (!isActive) { show('blocked-screen'); return; }
+
+        const name = fields.name ? fields.name.stringValue : 'Client';
+        document.getElementById('client-name-display').textContent = `Welcome, ${name}!`;
+
+        const accessToken = fields.accountabilityAccessToken ? fields.accountabilityAccessToken.stringValue : null;
+        if (accessToken) {
+          document.getElementById('btn-accountability').href = `https://accountability-livid.vercel.app/?access=${encodeURIComponent(accessToken)}`;
+        }
+
+        show('main-content');
+      } catch (err) {
+        show('blocked-screen');
+      }
+    }
+
+    checkAccess();
   </script>
 </body>
 </html>
