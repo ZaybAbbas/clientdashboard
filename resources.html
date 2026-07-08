@@ -12,8 +12,8 @@
 
   <div class="w-full max-w-md bg-white/80 backdrop-blur-xl rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.08)] p-6 sm:p-8 space-y-6 border border-white">
 
-    <div class="flex items-center justify-between">
-      <a href="index.html" class="flex items-center text-slate-500 text-sm font-semibold hover:text-slate-700">
+    <div id="dashboard-link-wrap" class="flex items-center justify-between">
+      <a id="btn-dashboard" href="index.html" class="flex items-center text-slate-500 text-sm font-semibold hover:text-slate-700">
         <i data-lucide="arrow-left" class="w-4 h-4 mr-1"></i>
         Dashboard
       </a>
@@ -35,6 +35,15 @@
 
   <script>
     lucide.createIcons();
+
+    (function setupDashboardLink() {
+      const code = new URLSearchParams(window.location.search).get('client');
+      if (code) {
+        document.getElementById('btn-dashboard').href = `index.html?client=${encodeURIComponent(code)}`;
+      } else {
+        document.getElementById('dashboard-link-wrap').style.display = 'none';
+      }
+    })();
 
     const CATEGORIES = [
       { key: 'meal-ideas', label: 'Meal Ideas', icon: 'utensils' },
