@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Latest Episode</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-100 via-slate-50 to-slate-200 flex flex-col items-center justify-center py-8 px-4 font-sans">
+
+  <div class="w-full max-w-sm bg-white/80 backdrop-blur-xl rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.08)] p-10 text-center border border-white">
+    <i data-lucide="loader-circle" class="w-8 h-8 mx-auto text-slate-400 animate-spin"></i>
+    <p class="text-slate-500 text-sm font-medium mt-3">Taking you to the latest episode...</p>
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    fetch('https://firestore.googleapis.com/v1/projects/accountability-app-68ab7/databases/(default)/documents/dashboardAccess/_podcast')
+      .then(res => {
+        if (!res.ok) throw new Error('not found');
+        return res.json();
+      })
+      .then(doc => {
+        const url = doc.fields && doc.fields.url ? doc.fields.url.stringValue : null;
+        if (url) {
+          window.location.href = url;
+        } else {
+          throw new Error('no url set');
+        }
+      })
+      .catch(() => {
+        document.body.innerHTML = `
+          <div class="w-full max-w-sm bg-white/80 backdrop-blur-xl rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.08)] p-10 text-center border border-white">
+            <p class="text-slate-500 text-sm font-medium">No episode link is set yet. Please message Zayb on WhatsApp.</p>
+          </div>`;
+      });
+  </script>
+</body>
+</html>
