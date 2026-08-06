@@ -104,7 +104,16 @@
         </div>
       </a>
 
-      <!-- Button 6 -->
+      <!-- Button 6 - Air Fryer -->
+      <a id="btn-airfryer" href="https://za-airfryer-recipes.vercel.app" target="_blank" rel="noopener noreferrer" class="flex items-center p-5 rounded-2xl text-white shadow-lg shadow-orange-500/30 bg-gradient-to-br from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 border border-orange-400/50 transition-all duration-300 transform active:scale-95 hover:-translate-y-1">
+        <i data-lucide="flame" class="w-8 h-8 mr-4 opacity-90 shrink-0"></i>
+        <div class="flex flex-col text-left">
+          <span class="font-bold text-lg tracking-wide">Air Fryer Kitchen</span>
+          <span class="text-sm font-medium text-orange-100 mt-0.5 leading-snug">100+ recipes with calories and macros — all air fryer friendly.</span>
+        </div>
+      </a>
+
+      <!-- Button 7 -->
       <a href="videos.html" class="flex items-center p-5 rounded-2xl text-white shadow-lg shadow-rose-500/30 bg-gradient-to-br from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 border border-rose-400/50 transition-all duration-300 transform active:scale-95 hover:-translate-y-1">
         <i data-lucide="video" class="w-8 h-8 mr-4 opacity-90 shrink-0"></i>
         <div class="flex flex-col text-left">
@@ -163,6 +172,10 @@
         const nutritionToken = fields.nutritionAccessToken ? fields.nutritionAccessToken.stringValue : null;
         if (nutritionToken) {
           document.getElementById('btn-mealplanner').href = `https://zatrainingnutrition.vercel.app/?access=${encodeURIComponent(nutritionToken)}`;
+        }
+
+        if (accessToken) {
+          document.getElementById('btn-airfryer').href = `https://za-airfryer-recipes.vercel.app/?access=${encodeURIComponent(accessToken)}`;
         }
 
         document.getElementById('btn-hiddencash').href = `https://expense-optimizer.vercel.app/?client=${encodeURIComponent(code)}`;
