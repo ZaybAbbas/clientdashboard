@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Workout Videos</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-100 via-slate-50 to-slate-200 flex flex-col items-center py-8 px-4 font-sans sm:py-12">
+
+  <div class="w-full max-w-md bg-white/80 backdrop-blur-xl rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.08)] p-6 sm:p-8 space-y-6 border border-white">
+
+    <div id="dashboard-link-wrap" class="flex items-center justify-between">
+      <a id="btn-dashboard" href="index.html" class="flex items-center text-slate-500 text-sm font-semibold hover:text-slate-700">
+        <i data-lucide="arrow-left" class="w-4 h-4 mr-1"></i>
+        Dashboard
+      </a>
+    </div>
+
+    <div class="text-center space-y-2">
+      <div class="w-16 h-16 mx-auto flex items-center justify-center mb-1 bg-white rounded-full shadow-sm border border-slate-100 ring-4 ring-white/50 overflow-hidden">
+        <i data-lucide="play-circle" class="w-7 h-7 text-rose-500"></i>
+      </div>
+      <h1 class="text-2xl font-extrabold text-slate-800 tracking-tight">Workout Videos</h1>
+      <p class="text-slate-500 text-sm leading-relaxed px-2 font-medium">Tap a category to open the playlist on YouTube.</p>
+    </div>
+
+    <div id="grid" class="flex flex-col gap-3"></div>
+
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    (function setupDashboardLink() {
+      const code = new URLSearchParams(window.location.search).get('client');
+      if (code) {
+        document.getElementById('btn-dashboard').href = `index.html?client=${encodeURIComponent(code)}`;
+      } else {
+        document.getElementById('dashboard-link-wrap').style.display = 'none';
+      }
+    })();
+
+    const PLAYLISTS = [
+      { title: 'Lower Body', url: 'https://www.youtube.com/playlist?list=PLd5gpVJt6bGA', icon: 'footprints' },
+      { title: 'Full Body', url: 'https://www.youtube.com/playlist?list=PLEVFb1PVjTfw', icon: 'user' },
+      { title: 'Upper Body', url: 'https://www.youtube.com/playlist?list=PLwhDDC0vxsq8R4aGFYXMx-eIsT_RQfO75', icon: 'dumbbell' }
+    ];
+
+    const gridEl = document.getElementById('grid');
+    PLAYLISTS.forEach(item => {
+      const a = document.createElement('a');
+      a.href = item.url;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      a.className = 'flex items-center p-4 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200';
+      a.innerHTML = `
+        <div class="w-10 h-10 rounded-xl bg-rose-50 flex items-center justify-center mr-3 flex-shrink-0">
+          <i data-lucide="${item.icon}" class="w-5 h-5 text-rose-500"></i>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="font-bold text-sm text-slate-800 truncate">${item.title}</div>
+          <div class="text-xs text-slate-400 mt-0.5">YouTube playlist</div>
+        </div>
+        <i data-lucide="external-link" class="w-4 h-4 text-slate-400 flex-shrink-0 ml-2"></i>
+      `;
+      gridEl.appendChild(a);
+    });
+    lucide.createIcons();
+  </script>
+</body>
+</html>
