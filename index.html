@@ -95,6 +95,15 @@
         </div>
       </a>
 
+      <!-- My Documents (only shown if this client has files) -->
+      <a id="btn-documents" href="documents.html" style="display:none" class="items-center p-5 rounded-2xl text-white shadow-lg shadow-sky-500/30 bg-gradient-to-br from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 border border-sky-400/50 transition-all duration-300 transform active:scale-95 hover:-translate-y-1">
+        <i data-lucide="folder-open" class="w-8 h-8 mr-4 opacity-90 shrink-0"></i>
+        <div class="flex flex-col text-left">
+          <span class="font-bold text-lg tracking-wide">My Documents</span>
+          <span class="text-sm font-medium text-sky-100 mt-0.5 leading-snug">Reports and files Zayb has made just for you.</span>
+        </div>
+      </a>
+
       <!-- Button 5 -->
       <a id="btn-hiddencash" href="https://expense-optimizer.vercel.app/" target="_blank" rel="noopener noreferrer" class="flex items-center p-5 rounded-2xl text-white shadow-lg shadow-red-500/30 bg-gradient-to-br from-red-600 to-red-800 hover:from-red-700 hover:to-red-900 border border-red-500/50 transition-all duration-300 transform active:scale-95 hover:-translate-y-1">
         <i data-lucide="piggy-bank" class="w-8 h-8 mr-4 opacity-90 shrink-0"></i>
@@ -190,6 +199,13 @@
         document.getElementById('btn-resources').href = `resources.html?client=${encodeURIComponent(code)}`;
 
         document.getElementById('btn-workouts').href = `workouts.html?client=${encodeURIComponent(code)}`;
+
+        const docValues = (fields.documents && fields.documents.arrayValue && fields.documents.arrayValue.values) || [];
+        if (docValues.length > 0) {
+          const docBtn = document.getElementById('btn-documents');
+          docBtn.href = `documents.html?client=${encodeURIComponent(code)}`;
+          docBtn.style.display = 'flex';
+        }
 
         show('main-content');
       } catch (err) {
